@@ -259,10 +259,10 @@ def _refresh_metadata_task(bookmark_id: int):
     metadata = load_website_metadata(bookmark.url, ignore_cache=True)
     update_fields = []
 
-    if metadata.title:
+    if metadata.title or metadata.title=='':
         bookmark.title = metadata.title
         update_fields.append("title")
-    if metadata.description:
+    if metadata.description or metadata.description=='':
         bookmark.description = metadata.description
         update_fields.append("description")
     if metadata.preview_image:
