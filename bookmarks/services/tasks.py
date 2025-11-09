@@ -256,8 +256,9 @@ def _refresh_metadata_task(bookmark_id: int):
 
     logger.info(f"Refresh metadata for bookmark. url={bookmark.url}")
 
-    metadata = load_website_metadata(bookmark.url)
+    metadata = load_website_metadata(bookmark.url, ignore_cache=True)
     update_fields = []
+
     if metadata.title:
         bookmark.title = metadata.title
         update_fields.append("title")
@@ -275,6 +276,13 @@ def _refresh_metadata_task(bookmark_id: int):
     bookmark.save(update_fields=update_fields)
     logger.info(f"Successfully refreshed metadata for bookmark. url={bookmark.url}")
 
+    # 若url变动，则按需更新html快照
+    if bookmark.owner.profile.enable_automatic_html_snapshots:
+        pending_assets = BookmarkAsset.objects.filter(bookmark=bookmark, status=BookmarkAsset.STATUS_PENDING)
+        if pending_assets.exists(): # 若有下载中的快照，则移除
+            pending_assets.delete()
+        
+        create_html_snapshot(bookmark)
 
 def is_html_snapshot_feature_active() -> bool:
     return settings.LD_ENABLE_SNAPSHOTS and not settings.LD_DISABLE_BACKGROUND_TASKS
