@@ -25,7 +25,7 @@
             action="{{ bookmark_list.action_url|safe }}"
             method="post" autocomplete="off">
         {% csrf_token %}
-        {% include 'bookmarks/bulk_edit/bar.html' with disable_actions='bulk_unarchive,bulk_restore,bulk_delete' %}
+        {% include 'bookmarks/bulk_edit/bar.html' with disable_actions='bulk_unarchive,bulk_restore' %}
 
         <div id="bookmark-list-container">
           {% include 'bookmarks/bookmark_list.html' %}

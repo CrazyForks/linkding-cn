@@ -7,27 +7,7 @@
         <i class="form-icon"></i>
       </label>
       <select name="bulk_action" class="form-select select-sm">
-        {% if not 'bulk_archive' in disable_actions %}
-          <option value="bulk_archive">归档</option>
-        {% endif %}
-        {% if not 'bulk_unarchive' in disable_actions %}
-          <option value="bulk_unarchive">取消归档</option>
-        {% endif %}
-        {% if not 'bulk_trash' in disable_actions %}
-          <option value="bulk_trash">删除</option>
-        {% endif %}
-        {% if not 'bulk_restore' in disable_actions %}
-          <option value="bulk_restore">还原书签</option>
-        {% endif %}
-        {% if not 'bulk_delete' in disable_actions %}
-          <option value="bulk_delete">彻底删除</option>
-        {% endif %}
-        {% if not 'bulk_tag' in disable_actions %}
-          <option value="bulk_tag">新增标签</option>
-        {% endif %}
-        {% if not 'bulk_untag' in disable_actions %}
-          <option value="bulk_untag">删除标签</option>
-        {% endif %}
+
         {% if not 'bulk_read' in disable_actions %}
           <option value="bulk_read">标为已读</option>
         {% endif %}
@@ -42,14 +22,44 @@
             <option value="bulk_unshare">取消分享</option>
           {% endif %}
         {% endif %}
+
+        <hr>
+        {% if not 'bulk_tag' in disable_actions %}
+          <option value="bulk_tag">新增标签</option>
+        {% endif %}
+        {% if not 'bulk_untag' in disable_actions %}
+          <option value="bulk_untag">删除标签</option>
+        {% endif %}
         {% if not 'bulk_refresh' in disable_actions %}
           <option value="bulk_refresh">重新抓取</option>
         {% endif %}
         {% if bookmark_list.snapshot_feature_enabled %}
-          <option value="bulk_snapshot">创建HTML快照</option>
+          {% if not 'bulk_snapshot' in disable_actions %}
+            <option value="bulk_snapshot">创建HTML快照</option>
+          {% endif %}
         {% endif %}
-        {% if not 'bulk_delete_snapshot' in disable_actions %}
+        {% if not 'bulk_remove_snapshot' in disable_actions %}
           <option value="bulk_remove_snapshot">移除全部快照</option>
+        {% endif %}
+
+        <hr>
+        {% if not 'bulk_archive' in disable_actions %}
+          <option value="bulk_archive">归档</option>
+        {% endif %}
+        {% if not 'bulk_unarchive' in disable_actions %}
+          <option value="bulk_unarchive">取消归档</option>
+        {% endif %}
+        {% if not 'bulk_restore' in disable_actions %}
+          <option value="bulk_restore"
+            {% if default_bulk_action == 'bulk_restore' %}selected{% endif %}>
+            还原书签
+          </option>
+        {% endif %}
+        {% if not 'bulk_trash' in disable_actions %}
+          <option value="bulk_trash">移入回收站</option>
+        {% endif %}
+        {% if not 'bulk_delete' in disable_actions %}
+          <option value="bulk_delete">彻底删除</option>
         {% endif %}
       </select>
       <div class="tag-autocomplete d-none" ld-tag-autocomplete>
